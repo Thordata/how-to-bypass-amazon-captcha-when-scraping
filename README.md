@@ -679,10 +679,19 @@ For more advanced data pipelines, consider writing into databases or data wareho
 
 ## Related Thordata resources
 
-- **Thordata GitHub organization**: `https://github.com/Thordata`  
-- **Python SDK**: `https://github.com/Thordata/thordata-python-sdk`  
-- **Amazon scraper examples** (Web Scraper Tools): see `examples/tools/amazon_scraper.py` in the SDK repo.  
-- **Thordata website**: `https://www.thordata.com` (for product overview, pricing, and up‑to‑date documentation).
+- **Thordata GitHub organization**: [github.com/Thordata](https://github.com/Thordata)  
+- **Python SDK**: [thordata-python-sdk](https://github.com/Thordata/thordata-python-sdk)  
+- **Amazon scraper examples** (Web Scraper Tools): see [`examples/tools/amazon_scraper.py`](https://github.com/Thordata/thordata-python-sdk/tree/main/examples/tools) in the SDK repo.  
+- **Thordata website**: [thordata.com](https://www.thordata.com) (for product overview, pricing, and up‑to‑date documentation).
+
+---
+
+## Legal notice (important)
+
+- This repository and all included code are provided **for educational and research purposes only**.  
+- When accessing any third‑party website (including Amazon), you are solely responsible for complying with that website’s **Terms of Service**, robots.txt rules, and applicable **laws and regulations** in your jurisdiction.  
+- Do **not** use these examples to overload, damage, or disrupt target sites, and do not use them in any context where automated access is **prohibited by contract or law**.  
+- The authors and Thordata do **not** provide legal advice and are **not liable** for any misuse of this code; if you are unsure about the legality of a particular use case, consult with a qualified legal professional first.
 
 ---
 
