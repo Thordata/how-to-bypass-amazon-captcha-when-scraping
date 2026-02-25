@@ -614,17 +614,29 @@ In practice, modern scraping stacks combine several techniques:
 
 Thordata’s Web Scraper Tools encapsulate these layers so that your Python code remains simple. Conceptually, the flow looks like this:
 
-```mermaid
-flowchart LR
-    A[Your script\n(thordata_amazon_product_by_asin.py)] --> B[Thordata API]
-    B --> C[Anti-bot & CAPTCHA layer\n(IPs, browser, challenges)]
-    C --> D[Amazon]
-    D --> C
-    C --> E[Normalized JSON result]
-    E --> A
+```text
+Your script (README examples & .py files)
+        |
+        v
+Thordata Python SDK (ThordataClient + Amazon tools)
+        |
+        v
+Thordata Web Scraper Tools
+  - IP rotation / proxy management
+  - Headless browser & fingerprinting
+  - CAPTCHA / challenge handling
+        |
+        v
+  Amazon website
+        |
+        v
+Normalized JSON result
+        |
+        v
+Your code that saves to CSV / database / dashboards
 ```
 
-If you decide to build your own infrastructure instead, you will need to re-create most of the pieces in nodes **B–C** above and maintain them over time.
+If you decide to build your own infrastructure instead, you will need to re-create most of the pieces in the “Web Scraper Tools” box above and maintain them over time.
 
 ---
 
