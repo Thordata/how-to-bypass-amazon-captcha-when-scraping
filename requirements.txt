@@ -1,0 +1,4 @@
+requests
+thordata-sdk
+python-dotenv
+
