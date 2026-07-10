@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How to Bypass Amazon CAPTCHA When Scraping — Free 2026 Python Guide</title>
+  <meta name="description" content="A practical, how-to-first Python guide to Amazon CAPTCHA: trigger it, detect it with free tools, understand why manual bypass doesn't scale, and when to switch to Thordata Web Scraper Tools.">
+  <meta name="author" content="Thordata">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="How to Bypass Amazon CAPTCHA When Scraping (2026)">
+  <meta property="og:description" content="Free Python guide: detect Amazon CAPTCHA, understand anti-bot, and use Thordata Web Scraper Tools for stable structured data.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://thordata.github.io/how-to-bypass-amazon-captcha-when-scraping/">
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23ff9900'/%3E%3Ctext x='50' y='68' font-size='56' text-anchor='middle' font-family='monospace' font-weight='bold' fill='%230d1117'%3E%3C/text%3E%3C/svg%3E">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+
+<!-- ============================ NAV ============================ -->
+<nav class="nav">
+  <a href="#" class="nav__brand">
+    <span class="nav__logo">🛡️</span>
+    <span>Amazon CAPTCHA Guide</span>
+  </a>
+  <button class="nav__menu-btn" aria-label="Menu">☰</button>
+  <div class="nav__links">
+    <a href="#setup">Setup</a>
+    <a href="#manual">Manual</a>
+    <a href="#thordata">Thordata</a>
+    <a href="#advanced">Advanced</a>
+    <a href="#faq">FAQ</a>
+    <a href="playground.html" class="nav__cta">Try Playground →</a>
+  </div>
+  <button class="theme-toggle" aria-label="Toggle theme">☀</button>
+</nav>
+
+<div class="layout">
+
+  <!-- ============================ TOC ============================ -->
+  <aside class="toc" aria-label="Table of contents">
+    <p class="toc__label">Contents</p>
+    <ol>
+      <li><a href="#disclaimer">Disclaimer</a></li>
+      <li><a href="#setup">Part 0 — Setup</a></li>
+      <li>
+        <a href="#manual">Part 1 — Free manual</a>
+        <ol class="toc__sub">
+          <li><a href="#minimal">1. Minimal request</a></li>
+          <li><a href="#save">2. Save &amp; inspect</a></li>
+          <li><a href="#detect">3. Detect in code</a></li>
+          <li><a href="#headers">4. Headers</a></li>
+          <li><a href="#scale">5. Why it doesn't scale</a></li>
+        </ol>
+      </li>
+      <li>
+        <a href="#thordata">Part 2 — Thordata</a>
+        <ol class="toc__sub">
+          <li><a href="#how">1. How it helps</a></li>
+          <li><a href="#install">2. Install &amp; config</a></li>
+          <li><a href="#product">3. Product by ASIN</a></li>
+          <li><a href="#search">4. Search by keyword</a></li>
+          <li><a href="#compare">5. Comparison</a></li>
+        </ol>
+      </li>
+      <li><a href="#advanced">Advanced (2026)</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#legal">Legal notice</a></li>
+    </ol>
+  </aside>
+
+  <!-- ============================ CONTENT ============================ -->
+  <main class="content">
+
+    <!-- HERO -->
+    <header class="hero">
+      <p class="eyebrow">2026 Python Tutorial · by Thordata</p>
+      <h1>How to bypass <span class="accent">Amazon CAPTCHA</span> when scraping</h1>
+      <p class="hero__lede">
+        A how-to-first guide: trigger Amazon's bot protection, learn to detect a CAPTCHA page
+        with pure Python and free tools, and understand exactly when it makes sense to switch to
+        a managed solution like Thordata Web Scraper Tools.
+      </p>
+      <div class="hero__cta-row">
+        <a class="btn btn--primary" href="#manual">Start with the free approach →</a>
+        <a class="btn btn--ghost" href="playground.html">🎮 Try the Playground</a>
+      </div>
+      <div class="hero__stats">
+        <div class="stat"><span class="stat__num">9</span><span class="stat__label">Example scripts</span></div>
+        <div class="stat"><span class="stat__num">36</span><span class="stat__label">Passing tests</span></div>
+        <div class="stat"><span class="stat__num">CLI</span><span class="stat__label">Unified package</span></div>
+        <div class="stat"><span class="stat__num">0</span><span class="stat__label">Network deps in tests</span></div>
+      </div>
+    </header>
+
+    <!-- DISCLAIMER -->
+    <section class="section reveal" id="disclaimer">
+      <div class="callout callout--warn">
+        <span class="callout__icon">⚠️</span>
+        <div class="callout__body">
+          <p class="callout__title">Disclaimer &amp; compliance</p>
+          <p>
+            This repository is for <strong>technical learning and research only</strong>. Always respect
+            Amazon's Terms of Service, robots rules, and applicable laws. Do not use these examples to
+            abuse, overload, or harm any website. For commercial or large-scale usage, consider a compliant
+            managed solution and, if needed, seek legal advice.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PART 0 — SETUP -->
+    <section class="section reveal" id="setup">
+      <p class="eyebrow">Part 0</p>
+      <h2>Setup</h2>
+      <p>Keep this tutorial in its own folder and create a virtual environment.</p>
+
+      <h3 id="venv">Create a virtual environment</h3>
+
+      <div class="code-block">
+        <div class="code-block__bar"><span><span class="dots"><span></span><span></span><span></span></span>macOS / Linux</span><span class="code-block__lang">bash</span></div>
+        <button class="code-block__copy">copy</button>
+<pre><code class="language-bash">python3 -m venv .env
+source .env/bin/activate</code></pre>
+      </div>
+
+      <div class="code-block">
+        <div class="code-block__bar"><span><span class="dots"><span></span><span></span><span></span></span>Windows</span><span class="code-block__lang">bash</span></div>
+        <button class="code-block__copy">copy</button>
+<pre><code class="language-bash">python -m venv .env
+.env\Scripts\activate</code></pre>
+      </div>
+
+      <h3 id="deps">Install dependencies</h3>
+      <p>For the free/manual part we only need <code>requests</code>. For the Thordata section we add the official SDK.</p>
+
+      <div class="code-block">
+        <div class="code-block__bar"><span><span class="dots"><span></span><span></span><span></span></span>install</span><span class="code-block__lang">bash</span></div>
+        <button class="code-block__copy">copy</button>
+<pre><code class="language-bash">pip install requests
+pip install thordata-sdk          # only for Part 2
+pip install python-dotenv         # optional, for .env files</code></pre>
+      </div>
+
+      <div class="callout callout--ok">
+        <span class="callout__icon">✅</span>
+        <div class="callout__body">
+          <p><strong>Sanity check:</strong> <code>python -c "import requests; print('requests OK')"</code></p>
+        </div>
+      </div>
+
+      <div class="callout callout--accent">
+        <span class="callout__icon">📦</span>
+        <div class="callout__body">
+          <p class="callout__title">New: installable package + CLI</p>
+          <p>
+            This repo now ships a small <code>amazon_captcha</code> package with detection, header rotation,
+            retry/backoff, export, batch processing, and a unified CLI. Install it editable and explore:
+          </p>
+        </div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-block__bar"><span><span class="dots"><span></span><span></span><span></span></span>install package with dev tooling</span><span class="code-block__lang">bash</span></div>
+        <button class="code-block__copy">copy</button>
+<pre><code class="language-bash">pip install -e ".[dev]"
+python -m amazon_captcha --help</code></pre>
+      </div>
+    </section>
+
+    <!-- PART 1 — MANUAL -->
+    <section class="section reveal" id="manual">
+      <p class="eyebrow">Part 1 · ≈80% of the guide</p>
+      <h2>Free manual approach: seeing &amp; detecting CAPTCHA</h2>
+      <p>
+        This part is deliberately low-level. The goal is to <strong>trigger</strong> Amazon's bot
+        protection, learn to <strong>recognize</strong> a CAPTCHA response, and understand
+        <strong>why</strong> simple header tweaks rarely "solve" CAPTCHA at scale.
+      </p>
+
+      <h3 id="minimal">1. Minimal request that likely triggers CAPTCHA</h3>
+      <div class="code-block">
+        <div class="code-block__bar"><span><span class="dots"><span></span><span></span><span></span></span>amazon_captcha_minimal.py</span><span class="code-block__lang">python</span></div>
+        <button class="code-block__copy">copy</button>
+<pre><code class="language-python">import requests
+
+URL = "https://www.amazon.com/dp/B096N2MV3H"
+
+response = requests.get(URL)
+print("Status code:", response.status_code)
+print(response.text[:500])</code></pre>
+      </div>
+      <div class="code-block">
+        <div class="code-block__bar"><span><span class="dots"><span></span><span></span><span></span></span>run</span><span class="code-block__lang">bash</span></div>
+        <button class="code-block__copy">copy</button>
+<pre><code class="language-bash">python examples/amazon_captcha_minimal.py</code></pre>
+      </div>
+
+      <p>Typical outcomes: status <code>503</code>, <code>403</code>, or even <code>200</code> with a bot-detection / CAPTCHA page instead of real product HTML. Hints include references to <em>"robot check"</em>, text asking you to <em>"type the characters you see"</em>, or URLs containing <code>captcha</code>.</p>
+
+      <h3 id="save">2. Saving the HTML and inspecting the CAPTCHA page</h3>
+      <div class="code-block">
+        <div class="code-block__bar"><span><span class="dots"><span></span><span></span><span></span></span>amazon_captcha_save.py</span><span class="code-block__lang">python</span></div>
+        <button class="code-block__copy">copy</button>
+<pre><code class="language-python">import requests
+
+URL = "https://www.amazon.com/dp/B096N2MV3H"
+response = requests.get(URL, timeout=30)
+
+with open("with_captcha.html", "w", encoding="utf-8") as f:
+    f.write(response.text)
+
+print("Saved response to with_captcha.html (status:", response.status_code, ")")</code></pre>
+      </div>
+      <p>Open <code>with_captcha.html</code> in a browser. A normal product page means your IP and pattern are still "healthy"; a CAPTCHA / robot-check page means the protection layer is actively blocking you. Things that influence this: IP reputation (datacenter vs. residential), request frequency, cookies &amp; JS execution, and historical behavior from your IP range.</p>
+
+      <h3 id="detect">3. Detecting CAPTCHA responses programmatically</h3>
+      <p>In real scripts you don't want to open HTML manually. Use the shared detection logic from the <code>amazon_captcha</code> package — the same markers power the <a href="playground.html">browser Playground</a>, so behavior matches.</p>
+
+      <div class="code-block">
+        <div class="code-block__bar"><span><span class="dots"><span></span><span></span><span></span></span>amazon_captcha_detect.py</span><span class="code-block__lang">python</span></div>
+        <button class="code-block__copy">copy</button>
+<pre><code class="language-python">import requests
+from amazon_captcha import detect
+
+URL = "https://www.amazon.com/dp/B096N2MV3H"
+
+def fetch_with_captcha_detection(url: str) -> requests.Response:
+    resp = requests.get(url, timeout=30)
+    result = detect(resp.text, status=resp.status_code, url=str(resp.url))
+    print("Status:", resp.status_code)
+    if result.is_captcha:
+        print(f"[WARN] CAPTCHA / bot-check page detected (risk={result.risk_level}).")
+        for marker in result.matched_markers:
+            print(f"  - matched: {marker!r}")
+    else:
+        print(f"[INFO] Response looks like a normal page (risk={result.risk_level}).")
+    return resp
+
+fetch_with_captcha_detection(URL)</code></pre>
+      </div>
+
+      <div class="callout callout--accent">
+        <span class="callout__icon">🎯</span>
+        <div class="callout__body">
+          <p>
+            This isn't bullet-proof (Amazon can change wording), but it's good enough to
+            <strong>avoid feeding CAPTCHA HTML into your parsers</strong> and to add logging like
+            "we're being challenged, back off or switch strategy".
+          </p>
+        </div>
+      </div>
+
+      <h3 id="headers">4. Adding browser-like headers (what helps, what doesn't)</h3>
+      <p>One of the first things people try is spoofing browser headers. It can help a bit for small-scale experiments, but it does <strong>not</strong> turn off bot detection.</p>
+
+      <div class="code-block">
+        <div class="code-block__bar"><span><span class="dots"><span></span><span></span><span></span></span>with a header pool + rotation</span><span class="code-block__lang">python</span></div>
+        <button class="code-block__copy">copy</button>
+<pre><code class="language-python">import requests
+from amazon_captcha.headers import BROWSER_PROFILES
+
+URL = "https://www.amazon.com/dp/B096N2MV3H"
+profile = BROWSER_PROFILES[0]  # or random_profile() / rotating_profiles()
+
+resp = requests.get(URL, headers=profile.as_headers(), timeout=30)
+print("Status:", resp.status_code)</code></pre>
+      </div>
+
+      <p>Even with perfect headers, you still face JS fingerprinting, behavioral signals (too fast, too regular), and IP reputation. For real crawling this quickly becomes a losing battle if you handle everything yourself.</p>
+
+      <h3 id="scale">5. Why manual CAPTCHA bypass doesn't really scale</h3>
+      <div class="callout callout--warn">
+        <span class="callout__icon">⚖️</span>
+        <div class="callout__body">
+          <p class="callout__title">Important distinction</p>
+          <p>
+            <strong>Solving CAPTCHAs</strong> (sending images to a solver, using ML to break them) can
+            violate terms of service and may be legally risky.
+            <strong>Avoiding CAPTCHAs</strong> — by looking more like real users with IP rotation,
+            realistic browser automation, rate limiting, and challenge handling — is usually the
+            <em>safer</em>, infrastructure-heavy path.
+          </p>
+        </div>
+      </div>
+      <p>Building all of this from scratch means maintaining a residential/mobile/ISP IP pool, browser automation that passes fingerprinting, robust retry/backoff logic, and continuous updates as anti-bot evolves. This is exactly the layer managed scraping platforms are designed to handle for you.</p>
+    </section>
+
+    <!-- PART 2 — THORDATA -->
+    <section class="section reveal" id="thordata">
+      <p class="eyebrow">Part 2 · ≈20% of the guide</p>
+      <h2>Bypass CAPTCHA the easy way with Thordata</h2>
+
+      <h3 id="how">1. How Thordata helps with CAPTCHA and anti-bot</h3>
+      <p>Instead of sending raw <code>requests.get</code> to Amazon and fighting 403/503, CAPTCHA pages, and fragile HTML parsing, you can use Thordata's Web Scraper Tools for Amazon. Thordata handles IP rotation, browser automation, and CAPTCHA / anti-bot challenges behind the scenes — you receive clean structured JSON via a simple Python API.</p>
+
+      <h3 id="install">2. Installation and configuration</h3>
+      <div class="code-block">
+        <div class="code-block__bar"><span><span class="dots"><span></span><span></span><span></span></span>install</span><span class="code-block__lang">bash</span></div>
+        <button class="code-block__copy">copy</button>
+<pre><code class="language-bash">pip install thordata-sdk</code></pre>
+      </div>
+      <p>Create a <code>.env</code> file (or set environment variables):</p>
+      <div class="code-block">
+        <div class="code-block__bar"><span><span class="dots"><span></span><span></span><span></span></span>.env</span><span class="code-block__lang">ini</span></div>
+        <button class="code-block__copy">copy</button>
+<pre><code class="language-ini">THORDATA_SCRAPER_TOKEN=your_scraper_token
+THORDATA_PUBLIC_TOKEN=your_public_token
+THORDATA_PUBLIC_KEY=your_public_key</code></pre>
+      </div>
+      <div class="code-block">
+        <div class="code-block__bar"><span><span class="dots"><span></span><span></span><span></span></span>create the client</span><span class="code-block__lang">python</span></div>
+        <button class="code-block__copy">copy</button>
+<pre><code class="language-python">from thordata import ThordataClient, load_env_file
+
+load_env_file()           # loads ./.env if present; won't override existing env
+client = ThordataClient() # reads tokens from environment</code></pre>
+      </div>
+
+      <h3 id="product">3. Example: get product details by ASIN</h3>
+      <p>Using the wrapped client from <code>amazon_captcha.thordata_client</code> — you don't manage CAPTCHAs, IPs, or headless browsers directly.</p>
+      <div class="code-block">
+        <div class="code-block__bar"><span><span class="dots"><span></span><span></span><span></span></span>thordata_amazon_product_by_asin.py</span><span class="code-block__lang">python</span></div>
+        <button class="code-block__copy">copy</button>
+<pre><code class="language-python">from amazon_captcha.thordata_client import get_product_by_asin
+
+product = get_product_by_asin("B0BZYCJK89", domain="amazon.com")
+print(product.title, product.final_price, product.currency)</code></pre>
+      </div>
+      <p>Under the hood: submit a single task → Thordata handles the anti-bot path including CAPTCHA → download structured JSON.</p>
+
+      <h3 id="search">4. Example: search Amazon products by keyword</h3>
+      <div class="code-block">
+        <div class="code-block__bar"><span><span class="dots"><span></span><span></span><span></span></span>thordata_amazon_search.py</span><span class="code-block__lang">python</span></div>
+        <button class="code-block__copy">copy</button>
+<pre><code class="language-python">from amazon_captcha.thordata_client import search_products
+
+items = search_products("wireless mouse", max_results=5)
+print(f"Found {len(items)} products")
+for item in items:
+    print("-", item.title, "| price:", item.final_price)</code></pre>
+      </div>
+      <p>You're not manually bypassing CAPTCHA — the backend coordinates IP rotation, browser behavior, and anti-bot challenges, so you just call a tool and receive JSON.</p>
+
+      <h3 id="compare">5. Manual vs. Thordata comparison</h3>
+      <div class="compare">
+        <div class="compare__card compare__card--manual">
+          <p class="eyebrow">Part 1</p>
+          <h3 class="compare__title">Manual free approach</h3>
+          <ul class="compare__list">
+            <li><span class="icon icon--no">✕</span> Hit CAPTCHA frequently on raw <code>requests</code></li>
+            <li><span class="icon icon--no">✕</span> Manage headers &amp; cookies by hand</li>
+            <li><span class="icon icon--no">✕</span> Source and rotate IPs yourself</li>
+            <li><span class="icon icon--no">✕</span> Parse HTML, handle layout changes</li>
+            <li><span class="icon icon--yes">✓</span> High learning value</li>
+            <li><span class="icon icon--yes">✓</span> Best for small experiments</li>
+          </ul>
+        </div>
+        <div class="compare__card compare__card--managed">
+          <p class="eyebrow">Part 2</p>
+          <h3 class="compare__title">Thordata Web Scraper Tools</h3>
+          <ul class="compare__list">
+            <li><span class="icon icon--yes">✓</span> Handles CAPTCHA &amp; anti-bot internally</li>
+            <li><span class="icon icon--yes">✓</span> Headers &amp; cookies managed automatically</li>
+            <li><span class="icon icon--yes">✓</span> IP pool &amp; rotation handled</li>
+            <li><span class="icon icon--yes">✓</span> Stable JSON with stable fields</li>
+            <li><span class="icon icon--yes">✓</span> Medium learning value</li>
+            <li><span class="icon icon--yes">✓</span> Best for commercial / large-scale</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ADVANCED -->
+    <section class="section reveal" id="advanced">
+      <p class="eyebrow">Advanced</p>
+      <h2>Modern anti-bot &amp; CAPTCHA landscape (2026)</h2>
+      <p>Amazon and other large sites combine several layers of bot detection. It's useful to understand these even if you ultimately rely on Thordata to handle them.</p>
+      <ul>
+        <li><strong>IP reputation &amp; ASN checks</strong> — datacenter IPs (especially from known cloud providers) are scrutinized more heavily than residential / mobile / ISP ranges.</li>
+        <li><strong>TLS &amp; HTTP fingerprinting</strong> — subtle details of your TLS handshake, HTTP/2 prioritization, and cipher choices can identify popular scraping libraries. (See <code>examples/curl_cffi_tls_demo.py</code>.)</li>
+        <li><strong>Browser fingerprinting</strong> — headless modes, missing fonts, odd canvas results, and uniform viewports all contribute to bot scores. (See <code>examples/playwright_stealth_demo.py</code>.)</li>
+        <li><strong>Behavioral analysis</strong> — very regular timing, no scrolling, zero interaction patterns are strong automation signals.</li>
+      </ul>
+      <p>Modern scraping stacks combine high-quality rotating IPs, headless browser automation in "stealth" modes, human-like pacing &amp; concurrency, and challenge handling. Thordata's Web Scraper Tools encapsulate these layers so your Python code stays simple:</p>
+
+      <div class="flow">
+        <div class="flow__nodes">
+          <div class="flow__node"><span>🐍</span> Your script (README examples &amp; <code>.py</code> files) <span class="tag">you</span></div>
+          <div class="flow__arrow">↓</div>
+          <div class="flow__node"><span>📦</span> Thordata Python SDK <span class="tag">sdk</span></div>
+          <div class="flow__arrow">↓</div>
+          <div class="flow__node is-scraper"><span>🛡️</span> Thordata Web Scraper Tools — IP rotation · fingerprinting · CAPTCHA handling <span class="tag">managed</span></div>
+          <div class="flow__arrow">↓</div>
+          <div class="flow__node"><span>🛒</span> Amazon website <span class="tag">target</span></div>
+          <div class="flow__arrow">↓</div>
+          <div class="flow__node"><span>{ }</span> Normalized JSON result <span class="tag">output</span></div>
+        </div>
+      </div>
+      <p>If you build your own infrastructure instead, you re-create most of the pieces in the "Web Scraper Tools" box and maintain them over time.</p>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section reveal" id="faq">
+      <p class="eyebrow">Troubleshooting</p>
+      <h2>FAQ</h2>
+      <div class="faq">
+        <details>
+          <summary>Scripts run but I only see 503 / "Service Unavailable" from Amazon</summary>
+          <div class="faq__answer">
+            <p>This is expected with plain <code>requests</code> and no proxy or browser layer. Use <code>amazon_captcha_save.py</code> to save the HTML and confirm you're seeing a CAPTCHA / bot-check page. Reduce request frequency, try a different network, or move to the Thordata-based examples.</p>
+          </div>
+        </details>
+        <details>
+          <summary>The Thordata script says public_token / public_key are missing</summary>
+          <div class="faq__answer">
+            <p>Create a <code>.env</code> file in the project root with <code>THORDATA_SCRAPER_TOKEN</code>, <code>THORDATA_PUBLIC_TOKEN</code>, and <code>THORDATA_PUBLIC_KEY</code>. Make sure the values are correct and run the script from the same folder so <code>load_env_file()</code> finds <code>.env</code>.</p>
+          </div>
+        </details>
+        <details>
+          <summary>Thordata scripts run, but some fields are None or missing</summary>
+          <div class="faq__answer">
+            <p>Different tools expose slightly different JSON schemas. Use <code>print(data[0])</code> or <code>pprint(data[0])</code> to inspect all available fields. The examples focus on a small, stable subset for clarity.</p>
+          </div>
+        </details>
+        <details>
+          <summary>How do I turn JSON results into CSV?</summary>
+          <div class="faq__answer">
+            <p>Use the built-in export helper or the CLI:</p>
+          </div>
+          <div class="code-block" style="margin:-0.5rem var(--space-5) var(--space-4); border-radius:0;">
+            <div class="code-block__bar"><span><span class="dots"><span></span><span></span><span></span></span>export to CSV</span><span class="code-block__lang">bash</span></div>
+            <button class="code-block__copy">copy</button>
+<pre><code class="language-bash">python -m amazon_captcha export results.json products.csv --product</code></pre>
+          </div>
+        </details>
+          <summary>Does the package work without the Thordata SDK installed?</summary>
+          <div class="faq__answer">
+            <p>Yes. The <code>amazon_captcha</code> core (detect, headers, fetch, export, batch, CLI) only depends on <code>requests</code>. <code>thordata_client</code> is imported lazily and raises a clear <code>ImportError</code> telling you to <code>pip install thordata-sdk</code> only when you actually call it.</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- LEGAL -->
+    <section class="section reveal" id="legal">
+      <p class="eyebrow">Legal notice</p>
+      <h2>Important</h2>
+      <div class="callout callout--warn">
+        <span class="callout__icon">📜</span>
+        <div class="callout__body">
+          <p>
+            This repository and all code are provided <strong>for educational and research purposes
+            only</strong>. When accessing any third-party website (including Amazon), you are solely
+            responsible for complying with that website's Terms of Service, robots.txt rules, and
+            applicable laws. Do not overload, damage, or disrupt target sites. The authors and Thordata
+            do not provide legal advice and are not liable for any misuse; consult a qualified legal
+            professional if unsure about a use case.
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ============================ FOOTER ============================ -->
+<footer class="footer">
+  <div class="footer__inner">
+    <div>
+      <p class="footer__brand">🛡️ Amazon CAPTCHA Guide</p>
+      <p class="footer__legal">
+        How-to-first tutorial by Thordata. Detect Amazon CAPTCHA with free Python tools, understand
+        modern anti-bot, and use Thordata Web Scraper Tools for stable structured data.
+        Examples tested around 2026-02-25; Amazon's HTML and anti-bot behavior change frequently.
+      </p>
+    </div>
+    <div class="footer__links">
+      <a href="https://github.com/Thordata/how-to-bypass-amazon-captcha-when-scraping">GitHub Repository →</a>
+      <a href="https://github.com/Thordata">Thordata on GitHub →</a>
+      <a href="https://github.com/Thordata/thordata-python-sdk">Python SDK →</a>
+      <a href="https://www.thordata.com">thordata.com →</a>
+      <a href="playground.html">CAPTCHA Playground →</a>
+    </div>
+  </div>
+</footer>
+
+<button class="to-top" aria-label="Back to top">↑</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-ini.min.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

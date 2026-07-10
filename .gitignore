@@ -30,3 +30,4 @@ samples_output/
 amazon_products.csv
 *_output.csv
 *_output.json
+.claude/
