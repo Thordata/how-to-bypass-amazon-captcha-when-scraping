@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CAPTCHA Detector Playground — Amazon CAPTCHA Guide</title>
+  <meta name="description" content="Interactive, fully client-side CAPTCHA detection playground. Paste HTML or pick a sample, see matched markers, risk level, and the request flow — no network calls.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23ff9900'/%3E%3Ctext x='50' y='72' font-size='52' text-anchor='middle' font-family='monospace' font-weight='bold' fill='%230d1117'%3E%3C/text%3E%3C/svg%3E">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/playground.css">
+</head>
+<body>
+
+<!-- ============================ NAV ============================ -->
+<nav class="nav">
+  <a href="index.html" class="nav__brand">
+    <span class="nav__logo">🛡️</span>
+    <span>Amazon CAPTCHA Guide</span>
+  </a>
+  <button class="nav__menu-btn" aria-label="Menu">☰</button>
+  <div class="nav__links">
+    <a href="index.html#manual">Manual</a>
+    <a href="index.html#thordata">Thordata</a>
+    <a href="index.html#advanced">Advanced</a>
+    <a href="index.html#faq">FAQ</a>
+    <a href="index.html" class="nav__cta">← Back to guide</a>
+  </div>
+  <button class="theme-toggle" aria-label="Toggle theme">☀</button>
+</nav>
+
+<div class="pg-layout">
+
+  <!-- HEADER -->
+  <header class="pg-header">
+    <p class="eyebrow">Interactive · 100% client-side</p>
+    <h1>CAPTCHA <span class="accent">Detector</span> Playground</h1>
+    <p class="hero__lede">
+      Paste an Amazon response (or pick a sample), and this page runs the same detection
+      heuristics as the <code>amazon_captcha</code> Python package — entirely in your browser.
+      See which markers fire, the risk level, and the request flow that a managed scraper
+      handles for you. <strong>No network calls leave your machine.</strong>
+    </p>
+  </header>
+
+  <!-- INPUT -->
+  <section class="pg-section">
+    <h2 class="pg-section__title"><span>1.</span> Pick a sample or paste HTML</h2>
+
+    <div class="pg-presets">
+      <button class="preset-btn" data-preset="captcha">CAPTCHA / robot-check</button>
+      <button class="preset-btn" data-preset="soft">Soft challenge (URL marker)</button>
+      <button class="preset-btn" data-preset="clean">Normal product page</button>
+    </div>
+
+    <div class="pg-input-wrap">
+      <textarea id="input" class="pg-input" spellcheck="false" placeholder="Paste Amazon HTML here, or pick a sample above..."></textarea>
+    </div>
+
+    <div class="pg-status-input">
+      <label for="status">HTTP status:</label>
+      <input id="status" type="number" inputmode="numeric" placeholder="503">
+      <span style="color:var(--fg-2)">(optional — 403/429/503 are challenge codes)</span>
+    </div>
+
+    <div class="pg-actions">
+      <button class="btn btn--primary" id="analyzeBtn">▶ Analyze</button>
+      <button class="btn btn--ghost" id="exportBtn">⬇ Export JSON</button>
+      <button class="btn btn--ghost" id="clearBtn">✕ Clear</button>
+    </div>
+  </section>
+
+  <!-- VERDICT -->
+  <div class="verdict" id="verdict">
+    <span class="verdict__icon">○</span>
+    <div>
+      <div class="verdict__title">Run analysis to see the verdict</div>
+      <div class="verdict__detail">No analysis yet.</div>
+    </div>
+  </div>
+
+  <!-- RISK METER -->
+  <section class="risk-meter">
+    <div class="risk-meter__head">
+      <span class="risk-meter__label">Risk level</span>
+      <span class="risk-meter__value is-none" id="riskValue">none</span>
+    </div>
+    <div class="risk-bar">
+      <div class="risk-bar__fill is-none" id="riskBar" style="width:6%"></div>
+    </div>
+  </section>
+
+  <!-- MATCHED MARKERS -->
+  <section class="matches" id="matches" style="display:none;">
+    <p class="matches__title">Matched markers</p>
+    <ul class="matches__list" id="matchesList"></ul>
+  </section>
+
+  <!-- HIGHLIGHTED PREVIEW -->
+  <section class="preview-wrap">
+    <p class="preview-wrap__title">Highlighted body</p>
+    <div class="preview" id="preview"></div>
+  </section>
+
+  <!-- FLOW ANIMATION -->
+  <section class="pg-flow">
+    <p class="preview-wrap__title" style="margin-bottom:var(--space-4)">Request flow — where detection sits</p>
+    <div class="pg-flow__nodes">
+      <div class="pg-flow__node"><span>🐍</span> Your script <span class="tag">you</span></div>
+      <div class="pg-flow__arrow">↓</div>
+      <div class="pg-flow__node"><span>🔍</span> Detection (this page / <code>amazon_captcha.detect</code>) <span class="tag">local</span></div>
+      <div class="pg-flow__arrow">↓</div>
+      <div class="pg-flow__node"><span>🛡️</span> Thordata Web Scraper Tools — handles CAPTCHA when detected <span class="tag">managed</span></div>
+      <div class="pg-flow__arrow">↓</div>
+      <div class="pg-flow__node"><span>{ }</span> Clean JSON <span class="tag">output</span></div>
+    </div>
+  </section>
+
+  <!-- MARKER EDITOR -->
+  <section class="editor pg-section">
+    <h2 class="pg-section__title"><span>2.</span> Marker editor</h2>
+    <p style="color:var(--fg-1); margin-bottom:var(--space-4);">
+      These are the substrings the detector looks for (case-insensitive). Core markers mirror
+      <code>amazon_captcha/detect.py</code> and can't be removed here; add your own custom
+      markers to experiment — they're applied live.
+    </p>
+    <ul class="editor__list" id="editorList"></ul>
+    <div class="editor__add">
+      <input id="newMarker" type="text" placeholder="e.g. bot-detection-signature" />
+      <button class="btn btn--ghost btn--small" id="addMarkerBtn">+ Add marker</button>
+    </div>
+  </section>
+
+  <!-- DISCLAIMER -->
+  <div class="callout callout--accent">
+    <span class="callout__icon">ℹ️</span>
+    <div class="callout__body">
+      <p>
+        Samples are <strong>synthetic snippets</strong> written for this playground — they are not
+        copied from real Amazon responses. The detector is a heuristic, not a guarantee: Amazon
+        can change wording anytime. For production scraping, use a managed solution like
+        <a href="index.html#thordata">Thordata Web Scraper Tools</a> instead of parsing challenge pages.
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer__inner">
+    <div>
+      <p class="footer__brand">🛡️ Amazon CAPTCHA Guide</p>
+      <p class="footer__legal">
+        CAPTCHA Detector Playground — runs entirely in your browser. The marker list mirrors the
+        <code>amazon_captcha</code> Python package. For educational and research use only.
+      </p>
+    </div>
+    <div class="footer__links">
+      <a href="index.html">← Back to the guide</a>
+      <a href="https://github.com/Thordata/how-to-bypass-amazon-captcha-when-scraping">GitHub →</a>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+<button class="to-top" aria-label="Back to top">↑</button>
+
+<script src="assets/js/main.js"></script>
+<script src="assets/js/playground.js"></script>
+</body>
+</html>
