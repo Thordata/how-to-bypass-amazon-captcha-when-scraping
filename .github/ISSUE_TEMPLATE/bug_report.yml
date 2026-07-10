@@ -1,0 +1,39 @@
+name: 🐛 Bug report
+description: Something in the tutorial, code, or docs is incorrect or broken
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report an issue! This is an **educational** repo,
+        so reports about stale detection markers, changed Amazon behavior, or broken
+        examples are especially welcome.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What's wrong?
+      description: A clear description of the incorrect or broken behavior.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: How to reproduce
+      description: Steps, command, or code snippet that triggers the issue.
+      placeholder: |
+        python -m amazon_captcha detect --html sample.html
+    validations:
+      required: true
+  - type: input
+    id: python
+    attributes:
+      label: Python version
+      placeholder: "3.12"
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Logs, screenshots, links, or notes.
+    validations:
+      required: false

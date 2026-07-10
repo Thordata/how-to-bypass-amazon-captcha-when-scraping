@@ -1,0 +1,32 @@
+name: ✨ Feature request
+description: Suggest an improvement to the tutorial, code, or docs site
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What's the problem or gap?
+      description: What is currently hard to understand, missing, or not working well?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Your proposed improvement
+      description: What would you like to see added or changed? Keep it educational.
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Code / package (amazon_captcha)
+        - Examples
+        - Documentation site
+        - Playground
+        - Tests / CI
+        - Other
+    validations:
+      required: true

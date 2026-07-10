@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Thordata support
+    url: https://www.thordata.com
+    about: For account, billing, or SDK product support (not repo bugs).
+  - name: Security report
+    url: mailto:support@thordata.com
+    about: Found a security issue in this repo's code? Email us — do not open a public issue. See SECURITY.md.

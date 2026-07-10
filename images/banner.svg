@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="220" viewBox="0 0 880 220" role="img" aria-label="How to Bypass Amazon CAPTCHA When Scraping — a 2026 Python guide by Thordata">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0d1117"/>
+      <stop offset="100%" stop-color="#232f3e"/>
+    </linearGradient>
+    <linearGradient id="amber" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ff9900"/>
+      <stop offset="100%" stop-color="#ffb84d"/>
+    </linearGradient>
+  </defs>
+  <rect width="880" height="220" rx="18" fill="url(#bg)"/>
+  <rect x="0" y="0" width="880" height="6" rx="3" fill="url(#amber)"/>
+
+  <!-- shield logo -->
+  <g transform="translate(48,52)">
+    <rect width="116" height="116" rx="26" fill="url(#amber)"/>
+    <!-- shield silhouette -->
+    <path d="M58 24 L82 34 L82 60 Q82 88 58 100 Q34 88 34 60 L34 34 Z"
+          fill="#0d1117" opacity="0.92"/>
+    <!-- check mark -->
+    <path d="M47 60 L55 69 L70 50" fill="none" stroke="#ff9900" stroke-width="7"
+          stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <text x="190" y="92" font-family="'Space Grotesk','Inter',sans-serif" font-size="40" font-weight="700" fill="#e6edf3">How to bypass Amazon</text>
+  <text x="190" y="138" font-family="'Space Grotesk','Inter',sans-serif" font-size="40" font-weight="700" fill="#e6edf3">
+    <tspan fill="#ff9900">CAPTCHA</tspan> when scraping
+  </text>
+  <text x="192" y="172" font-family="'JetBrains Mono',monospace" font-size="16" fill="#7d8590">2026 Python tutorial · detection · anti-bot · Thordata</text>
+
+  <!-- terminal dots -->
+  <g transform="translate(740,56)">
+    <circle cx="0" cy="0" r="8" fill="#ff5f56"/>
+    <circle cx="22" cy="0" r="8" fill="#ffbd2e"/>
+    <circle cx="44" cy="0" r="8" fill="#27c93f"/>
+  </g>
+</svg>
