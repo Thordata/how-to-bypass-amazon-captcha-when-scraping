@@ -92,7 +92,8 @@ def _ensure_ready() -> None:
     missing = [name for name in REQUIRED_ENV if not os.getenv(name)]
     if missing:
         raise ThordataConfigError(
-            "Missing Thordata environment variables: " + ", ".join(missing)
+            "Missing Thordata environment variables: "
+            + ", ".join(missing)
             + ". Set them in .env or your shell."
         )
 

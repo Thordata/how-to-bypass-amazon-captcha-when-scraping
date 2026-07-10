@@ -56,9 +56,7 @@ def test_fetch_with_retry_retries_on_captcha_then_succeeds():
 
 
 def test_fetch_with_retry_exhausts_attempts_on_persistent_captcha():
-    responses = [
-        _FakeResponse("<title>Robot Check</title>type the characters you see", 503)
-    ] * 5
+    responses = [_FakeResponse("<title>Robot Check</title>type the characters you see", 503)] * 5
     session, call = _make_session(responses)
     outcome = fetch_with_retry(
         "https://example.com", max_attempts=3, sleep=lambda _: None, session=session
@@ -71,9 +69,7 @@ def test_fetch_with_retry_exhausts_attempts_on_persistent_captcha():
 def test_fetch_with_retry_rotates_headers():
     responses = [_FakeResponse("<html>ok</html>", 200)]
     session, call = _make_session(responses)
-    fetch_with_retry(
-        "https://example.com", max_attempts=1, session=session
-    )
+    fetch_with_retry("https://example.com", max_attempts=1, session=session)
     sent = call["headers_history"][0]
     assert "User-Agent" in sent
     assert "Sec-CH-UA" in sent

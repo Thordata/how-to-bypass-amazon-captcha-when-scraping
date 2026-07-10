@@ -17,7 +17,9 @@ def to_json(data: object, path: str | Path) -> Path:
     return path
 
 
-def to_csv(rows: Iterable[Mapping[str, object]], path: str | Path, *, columns: list[str] | None = None) -> Path:
+def to_csv(
+    rows: Iterable[Mapping[str, object]], path: str | Path, *, columns: list[str] | None = None
+) -> Path:
     """Write a list-of-dicts to *path* as CSV.
 
     If *columns* is omitted, the union of keys (in first-seen order) is used.

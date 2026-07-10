@@ -46,10 +46,7 @@ def _cmd_fetch(args: argparse.Namespace) -> int:
         timeout=args.timeout,
     )
     print(f"attempts={outcome.attempts} status={outcome.response.status_code}")
-    print(
-        f"is_captcha={outcome.detection.is_captcha} "
-        f"risk={outcome.detection.risk_level}"
-    )
+    print(f"is_captcha={outcome.detection.is_captcha} risk={outcome.detection.risk_level}")
     if outcome.detection.matched_markers:
         print("matched_markers:")
         for m in outcome.detection.matched_markers:
@@ -130,7 +127,9 @@ def build_parser() -> argparse.ArgumentParser:
     p_export = sub.add_parser("export", help="convert JSON results to CSV")
     p_export.add_argument("input", help="JSON file (list or {ok:[...]} / {products:[...]})")
     p_export.add_argument("output", help="output CSV path")
-    p_export.add_argument("--product", action="store_true", help="use stable Amazon product columns")
+    p_export.add_argument(
+        "--product", action="store_true", help="use stable Amazon product columns"
+    )
     p_export.set_defaults(func=_cmd_export)
 
     return parser

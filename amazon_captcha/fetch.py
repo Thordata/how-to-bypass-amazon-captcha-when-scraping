@@ -88,19 +88,14 @@ def fetch_with_retry(
             if attempt < max_attempts:
                 sleep(_backoff(attempt, backoff_base, backoff_cap))
                 continue
-            raise FetchError(
-                f"Request failed after {max_attempts} attempts: {exc}"
-            ) from exc
+            raise FetchError(f"Request failed after {max_attempts} attempts: {exc}") from exc
 
         result = detect(
             resp.text,
             status=resp.status_code,
             url=str(resp.url),
         )
-        should_retry = (
-            resp.status_code in (403, 429, 503)
-            or (detect_captcha and result.is_captcha)
-        )
+        should_retry = resp.status_code in (403, 429, 503) or (detect_captcha and result.is_captcha)
         if not should_retry or attempt == max_attempts:
             return FetchOutcome(response=resp, detection=result, attempts=attempt)
 
@@ -108,12 +103,13 @@ def fetch_with_retry(
 
     # Unreachable: the loop either returns or raises. Kept for type safety.
     raise FetchError(
-        f"Exhausted {max_attempts} attempts"
-        + (f"; last error: {last_exc}" if last_exc else "")
+        f"Exhausted {max_attempts} attempts" + (f"; last error: {last_exc}" if last_exc else "")
     )
 
 
-def fetch_once(url: str, *, profile: BrowserProfile | None = None, timeout: float = 30.0) -> FetchOutcome:
+def fetch_once(
+    url: str, *, profile: BrowserProfile | None = None, timeout: float = 30.0
+) -> FetchOutcome:
     """Single, non-retrying fetch with optional explicit profile selection."""
     profile = profile or BROWSER_PROFILES[0]
     sess = requests.Session()

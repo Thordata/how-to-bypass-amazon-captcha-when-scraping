@@ -87,13 +87,9 @@ BROWSER_PROFILES: tuple[BrowserProfile, ...] = (
     ),
     BrowserProfile(
         label="firefox-linux",
-        user_agent=(
-            "Mozilla/5.0 (X11; Linux x86_64; rv:122.0) "
-            "Gecko/20100101 Firefox/122.0"
-        ),
+        user_agent=("Mozilla/5.0 (X11; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"),
         accept=(
-            "text/html,application/xhtml+xml,application/xml;q=0.9,"
-            "image/avif,image/webp,*/*;q=0.8"
+            "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8"
         ),
         accept_language="en-US,en;q=0.9",
         sec_ch_ua="",  # Firefox does not send Sec-CH-UA
