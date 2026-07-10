@@ -1,5 +1,13 @@
-import requests
+"""Minimal request to Amazon that often hits CAPTCHA.
 
+Run::
+
+    python examples/amazon_captcha_minimal.py
+"""
+
+from __future__ import annotations
+
+import requests
 
 URL = "https://www.amazon.com/dp/B096N2MV3H"
 
@@ -12,4 +20,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

@@ -1,4 +1,17 @@
-requests
-thordata-sdk
-python-dotenv
+# Core runtime dependency for the manual/free approach.
+requests>=2.31
 
+# Thordata managed approach (install separately if you run Part 2 examples).
+# thordata-sdk
+# python-dotenv
+
+# Optional advanced examples:
+# curl_cffi>=0.6      # TLS/JA3 impersonation demo
+# playwright>=1.40    # stealth headless browser demo
+
+# Optional batch processing progress bar:
+# tqdm>=4.65
+
+# Development / testing:
+# pytest>=7.4
+# ruff>=0.1.13

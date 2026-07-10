@@ -1,10 +1,32 @@
+# Python
 __pycache__/
 *.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+htmlcov/
+.coverage
+
+# Virtualenvs
 .env
 .env.*
 .venv/
+venv/
 env/
+
+# IDE
 .idea/
 .vscode/
 .DS_Store
 
+# Local tutorial artifacts (do NOT commit these)
+with_captcha.html
+*.local.html
+samples_output/
+amazon_products.csv
+*_output.csv
+*_output.json

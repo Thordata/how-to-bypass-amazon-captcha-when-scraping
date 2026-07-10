@@ -1,0 +1,75 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "amazon-captcha"
+version = "1.0.0"
+description = "Educational Amazon CAPTCHA detection & bypass toolkit (companion to the Thordata tutorial)."
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [{name = "Thordata", email = "support@thordata.com"}]
+keywords = ["amazon", "captcha", "scraping", "anti-bot", "thordata", "tutorial"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+    "requests>=2.31",
+]
+
+[project.optional-dependencies]
+thordata = ["thordata-sdk", "python-dotenv"]
+playwright = ["playwright>=1.40"]
+curl-cffi = ["curl_cffi>=0.6"]
+batch = ["tqdm>=4.65"]
+dev = [
+    "pytest>=7.4",
+    "ruff>=0.1.13",
+    "tqdm>=4.65",
+]
+
+[project.urls]
+Homepage = "https://thordata.github.io/how-to-bypass-amazon-captcha-when-scraping/"
+Repository = "https://github.com/Thordata/how-to-bypass-amazon-captcha-when-scraping"
+Documentation = "https://thordata.github.io/how-to-bypass-amazon-captcha-when-scraping/playground.html"
+
+[tool.setuptools]
+packages = ["amazon_captcha"]
+
+# ---------------------------------------------------------------------------
+# Ruff
+# ---------------------------------------------------------------------------
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+extend-exclude = ["docs", "images"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W", "UP", "B", "C4"]
+ignore = ["E501"]  # line length handled by formatter
+
+[tool.ruff.lint.per-file-ignores]
+"examples/*" = ["E402"]  # examples may import after explanatory comments
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+# ---------------------------------------------------------------------------
+# Pytest
+# ---------------------------------------------------------------------------
+[tool.pytest.ini_options]
+minversion = "7.4"
+testpaths = ["tests"]
+addopts = "-ra -q"
+filterwarnings = ["error"]
