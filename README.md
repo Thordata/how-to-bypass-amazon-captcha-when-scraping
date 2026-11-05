@@ -116,7 +116,7 @@ This repository is for **technical learning and research only**. Always respect 
 
 - **Thordata GitHub:** [github.com/Thordata](https://github.com/Thordata)
 - **Python SDK:** [thordata-python-sdk](https://github.com/Thordata/thordata-python-sdk)
-- **Website:** [thordata.com](https://www.thordata.com/products/web-scraper/amazon?op=flora&from=github)
+- **Website:** [thordata.com](https://www.thordata.com/products/web-scraper?op=flora&from=github)
 
 ## 🤝 Contributing
 
